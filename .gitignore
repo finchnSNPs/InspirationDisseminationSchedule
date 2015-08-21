@@ -1,0 +1,11 @@
+.Rproj.user
+.Rhistory
+.RData
+.Rprofile
+*md
+dossiers/*md
+dossiers/*pdf
+*pdf
+*html
+.httr-oauth
+availability.csv
