@@ -2,7 +2,6 @@
 .Rhistory
 .RData
 .Rprofile
-*md
 dossiers/*md
 dossiers/*pdf
 *pdf
