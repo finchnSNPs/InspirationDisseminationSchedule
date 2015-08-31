@@ -12,7 +12,7 @@ library(ggplot2)
 library(googlesheets)
 
 options(stringsAsFactors = FALSE)
-any_given_sunday <- parse_date_time("Jan 4 2015", "mdy") + dweeks(0:51)
+any_given_sunday <- parse_date_time("Jan 4 2015", "mdy") + dweeks(0:101)
 # lib_off_exec <- "/Applications/LibreOffice.app/Contents/MacOS/./soffice"
 # ods_file     <- "RAW_DATA/2014_winter_ID_poll.ods"
 # system(paste(lib_off_exec, "--invisible --convert-to csv", ods_file, 
@@ -34,13 +34,13 @@ category_names <- c("Timestamp", "Name", "Dept", "Deg", "PI",
 names(IDS) <- category_names
 
 scheduled <- read.table("scheduled.csv", sep = ",", head = TRUE)
-scheduled$Date <- parse_date_time(scheduled$Date, "md")
+scheduled$Date <- parse_date_time(scheduled$Date, c("md", "mdy"))
 
 # Takes in comma separated months and days, returns a vector of POSIX dates.
 get_availability <- function(x){
   x <- read.table(text = x, sep = ",", head = FALSE)  
   x <- unlist(x, use.names = FALSE)
-  y <- setNames(parse_date_time(x, "md"), x)
+  y <- setNames(parse_date_time(x, c("md", "mdy")), x)
   return(y)
 }
 
@@ -55,37 +55,52 @@ names(avail_list) <- IDS$Name
 IDS$Pref <- parse_date_time(IDS$Pref, "mdy")
 
 sundays <- length(any_given_sunday)
-avail_array <- array(dim = c(sundays, length(avail_list), 2), 
+avail_array <- array(dim = c(sundays, length(avail_list), 3), 
                      dimnames = list(Sundays = as.character(any_given_sunday),
                                      Guest   = names(avail_list),
-                                     c("Available", "Preference")))
-avail_array[, , "Available"]  <- vapply(avail_list, save_the_date, logical(sundays), any_given_sunday)
-avail_array[, , "Preference"] <- vapply(1:nrow(IDS), function(i) save_the_date(IDS$Pref[i], any_given_sunday), logical(sundays))
+                                     c("Available", "Preference", "Filled")))
+is_available <- vapply(avail_list, save_the_date, logical(sundays), any_given_sunday)
+is_preference <- vapply(1:nrow(IDS), function(i) save_the_date(IDS$Pref[i], any_given_sunday), logical(sundays))
+avail_array[, , "Available"]  <- ifelse(is_available, "Available", "Unavailable")
+avail_array[, , "Preference"] <- ifelse(is_preference, "Preference", NA)
+avail_array[as.character(scheduled$Date), , "Filled"] <- "Scheduled"
+
+compare_array <- function(x){
+  res <- x[max(which(!is.na(x)))]
+  if (res == "Scheduled") return(NA)
+  return(res)
+}
+#avail_array[!rownames(avail_array) %in% as.character(scheduled$Date), , "Filled"] <- FALSE
 
 unscheduled <- !dimnames(avail_array)$Guest %in% scheduled$Name
 scheduled_to <- which(any_given_sunday == scheduled$Date[nrow(scheduled)])
+availdf <- melt(avail_array[, unscheduled, "Available"])
+preferencedf <- melt(avail_array[, unscheduled, "Preference"])
+scheduledf <- melt(avail_array[, unscheduled, "Filled"])
 
-avail_plot <- ggplot(melt(avail_array[, unscheduled, "Available"]), 
-                     aes(x = Sundays, y = Guest, fill = value)) + 
+
+avail_plot <- 
+  ggplot(availdf, aes(x = Sundays, y = Guest, fill = value)) + 
   geom_tile() +
-  geom_tile(aes(x = Sundays, y = Guest, alpha = value, fill = "preference"), 
-             data = melt(avail_array[, unscheduled, "Preference"])) + 
-  geom_vline(xintercept = scheduled_to + 0.5) + 
+  geom_tile(aes(x = Sundays, y = Guest, fill = value, alpha = ifelse(is.na(value), 0, 1)), 
+            data = preferencedf) + 
+  geom_tile(aes(x = Sundays, y = Guest, fill = value, alpha = ifelse(is.na(value), 0, 0.75)), 
+            data = scheduledf) +
   theme_classic() + 
+  scale_alpha(guide = FALSE) +
   theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
-  scale_alpha_discrete(range = c(0, 1), guide = FALSE) +
-  scale_fill_brewer(name = "Availability", 
-                    labels = c("Available", "Unavailable", "Preference"),
-                    breaks = c("TRUE", "FALSE", "preference"),
-                    type = "div", palette = "RdYlBu") +
+  scale_fill_manual(name = "Availability", 
+                    labels = c("Available", "Unavailable", "Preference", "Scheduled"),
+                    breaks = c("Available", "Unavailable", "Preference", "Scheduled"),
+                    values = c(Preference = "#D7191C", Available = "#FDAE61", 
+                               Scheduled = "grey25", Unavailable = "#2C7BB6")) +
   scale_y_discrete(expand = c(0, 0)) +
   scale_x_discrete(expand = c(0, 0))
 
 if (interactive()) avail_plot
 
 ggsave(filename = "availability.pdf", width = 11, height = 5.5)
-outmat <- rowSums(avail_array, dims = 2)
-outmat <- t(ifelse(outmat > 0, ifelse(outmat > 1, "Preference", "YES"), "NO"))
+outmat <- t(apply(avail_array, 1:2, compare_array))
 write.table(x = outmat, file = "availability.csv", sep = ",", col.names = NA)
 
 make_dossier <- function(x, df, xlist){
