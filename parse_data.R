@@ -74,9 +74,9 @@ compare_array <- function(x){
 
 unscheduled <- !dimnames(avail_array)$Guest %in% scheduled$Name
 scheduled_to <- which(any_given_sunday == scheduled$Date[nrow(scheduled)])
-availdf <- melt(avail_array[, unscheduled, "Available"])
-preferencedf <- melt(avail_array[, unscheduled, "Preference"])
-scheduledf <- melt(avail_array[, unscheduled, "Filled"])
+availdf <- melt(avail_array[, unscheduled, "Available", drop = FALSE])
+preferencedf <- melt(avail_array[, unscheduled, "Preference", drop = FALSE])
+scheduledf <- melt(avail_array[, unscheduled, "Filled", drop = FALSE])
 
 
 avail_plot <- 
@@ -104,7 +104,7 @@ outmat <- t(apply(avail_array, 1:2, compare_array))
 write.table(x = outmat, file = "availability.csv", sep = ",", col.names = NA)
 
 make_dossier <- function(x, df, xlist){
-  dname <- sub(" ", "_", x)
+  dname <- gsub(" ", "_", x)
   i <- which(df$Name == x)
   f <- file(paste("dossiers", paste(dname, "md", sep = "."), sep = "/"), "w")
   cat("# ", x, "\n\n", file = f)
