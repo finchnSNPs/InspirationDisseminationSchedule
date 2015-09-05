@@ -21,6 +21,21 @@ can authorize your session. If you are using this code, it is assumed that you
 are a host of Inspiration Dissemination. A browser window will pop up and it
 will ask you to authorize R to access google sheets.
 
+If you run it interactively from the terminal, use:
+
+```r
+source('parse_data.R', echo = TRUE)
+```
+
+This will get you to the part where you can view the availability chart with
+the side effect that it won't create the dossiers. To create the dossiers 
+without viewing the chart, run:
+
+
+```r
+source('parse_data.R', echo = FALSE)
+```
+
 ## Running otherwise
 
 You can simply create all of the dossiers and the availability table by running
