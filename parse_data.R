@@ -66,6 +66,8 @@ avail_array[, , "Available"]  <- ifelse(is_available, "Available", "Unavailable"
 avail_array[, , "Preference"] <- ifelse(is_preference, "Preference", NA)
 avail_array[as.character(scheduled$Date), , "Filled"] <- "Scheduled"
 
+avail_array <- avail_array[any_given_sunday > ymd(Sys.Date()), , , drop = FALSE]
+
 compare_array <- function(x){
   res <- x[max(which(!is.na(x)))]
   if (res == "Scheduled") return(NA)
