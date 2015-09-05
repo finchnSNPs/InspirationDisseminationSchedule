@@ -41,7 +41,7 @@ source('parse_data.R', echo = FALSE)
 You can simply create all of the dossiers and the availability table by running
 
 ```
-make render
+make parse
 ```
 
 If you want to run everything and move the zipped results to your google drive,
