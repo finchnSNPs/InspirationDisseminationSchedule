@@ -103,18 +103,22 @@ avail_plot <-
 preferencedf$op <- ifelse(is.na(preferencedf$value), "no", "preference")
 scheduledf$op <- ifelse(is.na(preferencedf$value), "no", "Scheduled")
 
-infotip <- function(x, y){
+infotip <- function(x){
   if (is.null(x)) return(NULL)
   avail <- switch(x$value,
                   Available = "<b>yes<b>",
                   Unavailable = "no",
                   Preference = "<b><font color = 'red'>YES!!!</font></b>"
                   )
+  sunday <- paste0(month(x$Sunday,label = TRUE), " ", day(x$Sunday), 
+                   ", ", year(x$Sunday))
   if (x$Scheduled < 1){
-    guest <- y$Name[ymd(y$Date) == ymd(x$Sunday)]
-    return(paste0("<font color = 'gray'><h4>", x$Sunday, ": ", guest, "</h4></font>"))
+    guest <- scheduled$Name[ymd(scheduled$Date) == ymd(x$Sunday)]
+    DEPT  <- IDS$Dept[IDS$Name == guest]
+    return(paste0("<font color = 'gray'><h4>", sunday, ":</h4><h4>", 
+                  guest, " (", DEPT, ")</h4></font>"))
   }
-  paste0("<h4>", x$Sunday, "</h4>", x$Guest, "<br>Available: ", avail)
+  paste0("<h4>", sunday, "</h4>", x$Guest, "<br>Available: ", avail)
 }
 
 
