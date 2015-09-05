@@ -9,6 +9,7 @@ library(dplyr)
 library(lubridate)
 library(reshape2)
 library(ggplot2)
+library(ggvis)
 library(googlesheets)
 
 options(stringsAsFactors = FALSE)
@@ -97,7 +98,39 @@ avail_plot <-
   scale_y_discrete(expand = c(0, 0)) +
   scale_x_discrete(expand = c(0, 0))
 
-if (interactive()) avail_plot
+preferencedf$op <- ifelse(is.na(preferencedf$value), "no", "preference")
+scheduledf$op <- ifelse(is.na(preferencedf$value), "no", "Scheduled")
+
+infotip <- function(x){
+  if (is.null(x)) return(NULL)
+  avail <- switch(x$value,
+                  Available = "<b>yes<b>",
+                  Unavailable = "no",
+                  Preference = "<b><font color = 'red'>YES!!!</font></b>"
+                  )
+  if (x$Scheduled < 1){
+    return(paste0("<font color = 'gray'><h4>", x$Sunday, ": Filled</h4></font>"))
+  }
+  paste0("<h4>", x$Sunday, "</h4>", x$Guest, "<br>Available: ", avail)
+}
+
+
+xax <- axis_props(labels = list(angle = -90, baseline = "middle", align = "right"))
+
+vis_plot <- avail_array[, unscheduled , -3, drop = FALSE] %>%
+  apply(1:2, compare_array) %>%
+  t %>% 
+  melt %>%
+  group_by(Guest) %>% 
+  mutate(Scheduled = ifelse(is.na(avail_array[, unique(Guest), 3]), 1, 0.5)) %>%
+  ggvis(x = ~Sundays, y = ~Guest, fill = ~value, opacity := ~Scheduled) %>%
+  layer_rects(width = band(), height = band()) %>%
+  add_tooltip(html = infotip, "hover") %>% 
+  add_axis("x", title = "", properties = xax) %>%
+  add_axis("y", title = "")
+
+
+if (interactive()) vis_plot 
 
 ggsave(filename = "availability.pdf", width = 11, height = 5.5)
 outmat <- t(apply(avail_array, 1:2, compare_array))
