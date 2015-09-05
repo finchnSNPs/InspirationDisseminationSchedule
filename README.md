@@ -11,7 +11,7 @@ You will need to install R (preferably Rstudio), and pandoc.
 You will also need the following packages:
 
 ```r
-install.packages(c("dplyr", "lubridate", "reshape2", "ggplot2", "googlesheets"))
+install.packages(c("dplyr", "lubridate", "reshape2", "ggplot2", "ggvis", "googlesheets"))
 ```
 
 ## Running for the first time
