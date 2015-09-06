@@ -6,16 +6,17 @@ radio show at Oregon State University.
 
 ## Setup
 
-You will need to install R (preferably Rstudio), and pandoc.
+You will need to install [R](https://cran.r-project.org) (preferably 
+[Rstudio](https://rstudio.com)), and [pandoc](http://pandoc.org/installing.html).
 
-You will also need to install the "scheduler" package:
+You will also need to install the "scheduler" package located here so we can
+ensure all the dependencies are installed. You can do that by running the 
+following code:
 
 ```r
 install.packages("devtools")
 devtools::install_github("zkamvar/InspirationDisseminationSchedule/scheduler")
 ```
-
-By making a package, I can ensure that the dependencies will be installed.
 
 ## Running for the first time
 
