@@ -8,11 +8,14 @@ radio show at Oregon State University.
 
 You will need to install R (preferably Rstudio), and pandoc.
 
-You will also need the following packages:
+You will also need to install the "scheduler" package:
 
 ```r
-install.packages(c("dplyr", "lubridate", "reshape2", "ggplot2", "ggvis", "googlesheets"))
+install.packages("devtools")
+devtools::install_github("zkamvar/InspirationDisseminationSchedule/scheduler")
 ```
+
+By making a package, I can ensure that the dependencies will be installed.
 
 ## Running for the first time
 
