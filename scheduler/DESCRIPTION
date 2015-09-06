@@ -8,4 +8,11 @@ Maintainer: Zhian N. Kamvar <zkamvar@gmail.com>
 Description: More details about what the package does. See
         <http://http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file>
         for details on how to write this part.
+Imports: 
+  dplyr,
+  lubridate,
+  reshape2,
+  ggplot2,
+  ggvis,
+  googlesheets
 License: MIT
