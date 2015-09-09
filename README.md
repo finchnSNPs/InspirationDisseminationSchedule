@@ -20,6 +20,10 @@ devtools::install_github("zkamvar/InspirationDisseminationSchedule/scheduler")
 
 ## Running for the first time
 
+First, [**download the zip file of this repository by clicking here**](https://github.com/zkamvar/InspirationDisseminationSchedule/archive/master.zip). 
+Afterwards, unzip the file and open the folder. If you are using Rstudio, double click on 
+**ID_schedule.Rproj**. This will open up Rstudio in that folder.
+
 You will need to run this for the first time interactively so that googlesheets 
 can authorize your session. If you are using this code, it is assumed that you 
 are a host of Inspiration Dissemination. A browser window will pop up and it
