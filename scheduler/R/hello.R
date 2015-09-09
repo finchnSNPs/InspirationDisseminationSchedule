@@ -66,8 +66,9 @@ compare_array <- function(x, set_missing = "Scheduled"){
 #' @param x a data frame used to create the ggvis object.
 #' 
 #' @return a string encoding html.
+#' @rdname infohover
 #' @export
-infotip <- function(x){
+infohover <- function(x){
   if (is.null(x)) return(NULL)
   avail <- switch(x$value,
                   Available = "<b>yes<b>",
@@ -85,6 +86,36 @@ infotip <- function(x){
                   guest, " (", DEPT, ")</h4></font>"))
   }
   paste0("<h4>", sunday, "</h4>", x$Guest, "<br>Available: ", avail)
+}
+
+#' @rdname infohover
+#' @export
+infoclick <- function(x){
+  if (is.null(x)) return(NULL)
+  avail <- switch(x$value,
+                  Available = "<b>yes<b>",
+                  Unavailable = "no",
+                  Preference = "<b><font color = 'red'>YES!!!</font></b>"
+                  )
+  sunday <- paste0(month(x$Sunday,label = TRUE), " ", day(x$Sunday), 
+                   ", ", year(x$Sunday))
+  sdf   <- scheduler::scheduled$get()
+  iddf  <- scheduler::IDS$get()
+  if (x$Scheduled == 1){
+    guest <- x$Guest
+  } else {
+    guest <- sdf$Name[lubridate::ymd(sdf$Date) == lubridate::ymd(x$Sunday)]
+  }
+  DEPT  <- iddf$Dept[iddf$Name == guest]
+  INFO  <- iddf$Desc[iddf$Name == guest]
+  res   <- paste0("<h4>", sunday, ": ", 
+                  guest, " (", DEPT, ")</h4>",
+                  "<h4>Research Description:</h4>",
+                  INFO, "<br />")
+  if (x$Scheduled == 1){
+    res <- paste0(res, "Available: ", avail, "<br />") 
+  }
+  return(res)
 }
 
 #' Function to create a markdown dossier for each participant
