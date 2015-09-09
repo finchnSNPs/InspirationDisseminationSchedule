@@ -20,31 +20,29 @@ devtools::install_github("zkamvar/InspirationDisseminationSchedule/scheduler")
 
 ## Running for the first time
 
-First, [**download the zip file of this repository by clicking here**](https://github.com/zkamvar/InspirationDisseminationSchedule/archive/master.zip). 
-Afterwards, unzip the file and open the folder. If you are using Rstudio, double click on 
+1. [**download the zip file of this repository by clicking here**](https://github.com/zkamvar/InspirationDisseminationSchedule/archive/master.zip). 
+2. unzip the file and open the folder. If you are using Rstudio, double click on 
 **ID_schedule.Rproj**. This will open up Rstudio in that folder.
+3. run `source('parse_data.R', echo = TRUE)`. 
+    - At this time, your browser window will pop up and ask you to authorize a google account for use. **Use the InspirationDissemination account.**
 
 You will need to run this for the first time interactively so that googlesheets 
 can authorize your session. If you are using this code, it is assumed that you 
-are a host of Inspiration Dissemination. A browser window will pop up and it
-will ask you to authorize R to access google sheets.
+are a host of Inspiration Dissemination.
 
-If you run it interactively from the terminal, use:
 
-```r
-source('parse_data.R', echo = TRUE)
-```
+## Creating the Dossiers
 
-This will get you to the part where you can view the availability chart with
-the side effect that it won't create the dossiers. To create the dossiers 
-without viewing the chart, run:
+This can be done from within R or through a makefile. Note that this assumes you
+have a unix system and have successfully installed pandoc.
 
+### From the R console:
 
 ```r
 source('parse_data.R', echo = FALSE)
 ```
 
-## Running otherwise
+### From the terminal:
 
 You can simply create all of the dossiers and the availability table by running
 
