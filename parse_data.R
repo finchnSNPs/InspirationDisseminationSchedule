@@ -145,7 +145,8 @@ vis_plot <- avail_array[, unscheduled , -3, drop = FALSE] %>%
   mutate(Scheduled = ifelse(is.na(avail_array[, unique(Guest), 3]), 1, 0.5)) %>%
   ggvis(x = ~Sundays, y = ~Guest, fill = ~value, opacity := ~Scheduled) %>%
   layer_rects(width = band(), height = band()) %>%
-  add_tooltip(html = infotip, "hover") %>% 
+  add_tooltip(html = infohover, "hover") %>% 
+  add_tooltip(html = infoclick, "click") %>% 
   add_axis("x", title = "", properties = xax) %>%
   add_axis("y", title = "")
 
