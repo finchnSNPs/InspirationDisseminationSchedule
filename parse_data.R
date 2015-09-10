@@ -162,7 +162,7 @@ write.table(x = outmat, file = "availability.csv", sep = ",", col.names = NA)
 
 # Writing the dossiers in markdown
 for (i in names(avail_list)){
-  fname <- make_filename(i, wd = ".", newdir = "/dossiers/md_files")
+  fname <- make_filename(i, wd = ".", newdir = "/dossiers/md_files/")
   if (!file.exists(fname)){
     make_dossier(i, IDS, avail_list, wd = ".")
   }
