@@ -3,6 +3,7 @@
 .RData
 .Rprofile
 dossiers/*md
+dossiers/md_files/*md
 dossiers/*pdf
 *pdf
 *html
