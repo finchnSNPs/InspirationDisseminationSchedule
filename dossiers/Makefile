@@ -13,15 +13,18 @@ html: $(HTML)
 # This generic rule accepts PDF targets with corresponding Markdown 
 # source, and makes them using pandoc
 %.md.pdf : %.md
-	pandoc $< -o $@
+	pandoc $< -o pdf_files/$@
 %.md.html : %.md
-	pandoc $< -o $@
+	pandoc $< -o html_files/$@
 
 # Remove all PDF outputs
 clean :
 	rm $(PDFS) $(HTML)
 
-all : html pdf
+move: 
+	-mv *.md md_files/
+
+all : html pdf move
 	
 # Remove all PDF outputs then build them again
 rebuild : clean all
