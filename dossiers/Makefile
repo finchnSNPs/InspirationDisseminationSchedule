@@ -5,6 +5,7 @@
 PDFS := $(patsubst %.md, pdf_files/%.md.pdf, $(wildcard *.md))
 
 HTML := $(patsubst %.md, html_files/%.md.html, $(wildcard *.md))
+MD   := $(wildcard *.md)
 
 # The all rule makes all the PDF files listed
 pdf : $(PDFS)
@@ -22,7 +23,7 @@ clean :
 	rm $(PDFS) $(HTML)
 
 move: 
-	-mv *.md md_files/
+	-mv $(MD) md_files/
 
 all : html pdf move
 	
