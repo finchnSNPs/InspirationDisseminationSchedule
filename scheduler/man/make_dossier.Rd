@@ -2,9 +2,12 @@
 % Please edit documentation in R/hello.R
 \name{make_dossier}
 \alias{make_dossier}
+\alias{make_filename}
 \title{Function to create a markdown dossier for each participant}
 \usage{
 make_dossier(x, df, xlist, wd = ".")
+
+make_filename(x, wd = ".", newdir = "/dossiers/")
 }
 \arguments{
 \item{x}{a name of a participant}

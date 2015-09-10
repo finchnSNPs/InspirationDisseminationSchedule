@@ -126,11 +126,12 @@ infoclick <- function(x){
 #'   availability.
 #' @param wd the location of the directory that contains the 'dossiers' folder.
 #' @return nothing. 
+#' @rdname make_dossier
 #' @export
 make_dossier <- function(x, df, xlist, wd = "."){
-  dname <- gsub(" ", "_", x)
+  dname <- make_filename(x, wd)
   i <- which(df$Name == x)
-  f <- file(paste0(path.expand(wd), "/dossiers/", dname, ".md"), "w")
+  f <- file(dname, "w")
   cat("# ", x, "\n\n", file = f)
   cat("## Email: <", df$Email[i], ">\n\n", file = f, sep = "")
   cat("### ", df$Deg[i], "in", df$Dept[i], "\n\n", file = f)
@@ -147,6 +148,12 @@ make_dossier <- function(x, df, xlist, wd = "."){
 }
 
 
+#' @rdname make_dossier
+#' @export
+make_filename <- function(x, wd = ".", newdir = "/dossiers/"){
+  dname <- gsub(" ", "_", x)
+  paste0(path.expand(wd), newdir, dname, ".md")
+}
 
 VALFUN <- function(){
   val <- NULL
