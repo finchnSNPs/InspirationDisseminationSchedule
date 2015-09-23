@@ -70,6 +70,9 @@ folder based on their file extension. Note that `*.md` stands for markdown,
 which is a kind of text format that is easily converted into webpages like the
 one you're reading.
 
+> If you are running this for the first time, it might take some time to create all
+> of the PDF documents.
+
 This can be done from within R or through a makefile. Note that this assumes you
 have a unix system and have successfully installed pandoc.
 
