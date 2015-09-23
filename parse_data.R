@@ -54,9 +54,23 @@ gs_title("participants") %>%        # register the google sheet called "particip
   (IDS$set)                         # store in the IDS internal data holder.
 #' The procedure is similar here, except we are reading in the data for the 
 #' guests that have already been scheduled.
-read.table("scheduled.csv", sep = ",", head = TRUE) %>% 
+gs_title("previous_guests") %>% 
+  gs_read() %>% 
   mutate(Date = parse_date_time(Date, c("md", "mdy"))) %>%
   (scheduled$set)
+#' 
+#' Since it's nice to have the CSV of previous guests available for quick 
+#' reference, here we are sorting the incoming spreadsheet, making the date a
+#' character string, and then writing a table.
+sched_out <- scheduled$get() %>% 
+  `[`(order(.$Date), ) %>% 
+  mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date)))
+
+write.table(scheduled$get()[order(scheduled$get("Date")), ], 
+            file = "scheduled.csv", 
+            sep = ",", 
+            row.names = FALSE,
+            col.names = TRUE)
 #' Parsing the availability for the guests requires the creation of a separate
 #' vector for each guest containing POSIX dates. Since each guest can have a
 #' different number of availabilities, this should be a list.
@@ -88,7 +102,8 @@ avail_array[, , "Available"]  <- ifelse(is_available, "Available", "Unavailable"
 avail_array[, , "Preference"] <- ifelse(is_preference, "Preference", NA)
 
 # Scheduled slots
-avail_array[as.character(scheduled$get("Date")), , "Filled"] <- "Scheduled"
+Sched_Sunday <- rownames(avail_array) %in% as.character(scheduled$get("Date"))
+avail_array[Sched_Sunday, , "Filled"] <- "Scheduled"
 
 # Removing the rows that are in the past.
 avail_array <- avail_array[any_given_sunday > ymd(Sys.Date()), , , drop = FALSE]
