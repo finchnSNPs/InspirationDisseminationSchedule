@@ -52,6 +52,7 @@ gs_title("participants") %>%        # register the google sheet called "particip
   setNames(category_names) %>%      # set the names
   mutate(Pref = parse_date_time(Pref, "mdy")) %>% # recode preference as POSIX
   (IDS$set)                         # store in the IDS internal data holder.
+#' 
 #' The procedure is similar here, except we are reading in the data for the 
 #' guests that have already been scheduled.
 gs_title("previous_guests") %>% 
