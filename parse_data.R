@@ -67,7 +67,7 @@ sched_out <- scheduled$get() %>%
   `[`(order(.$Date), ) %>% 
   mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date)))
 
-write.table(scheduled$get()[order(scheduled$get("Date")), ], 
+write.table(sched_out, 
             file = "scheduled.csv", 
             sep = ",", 
             row.names = FALSE,
