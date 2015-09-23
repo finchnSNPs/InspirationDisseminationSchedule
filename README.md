@@ -36,6 +36,8 @@ are a host of Inspiration Dissemination.
 **ID_schedule.Rproj**. This will open up Rstudio in that folder.
 3. copy and paste the following command into your R console:
 
+***
+
 ```r
 source('parse_data.R', echo = TRUE)
 ```
