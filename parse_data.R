@@ -36,7 +36,7 @@ options(stringsAsFactors = HELLNO)
 
 any_given_sunday <- parse_date_time("Jan 4 2015", "mdy") + dweeks(0:101)
 sundays          <- length(any_given_sunday)
-category_names   <- c("Timestamp", "Name", "Email", "Dept", "Deg", "PI", 
+category_names   <- c("Timestamp", "Name", "Email", "Dept", "PI", "Deg", 
                       "Avail", "Pref", "Desc")
 #' ### Data
 #' 
