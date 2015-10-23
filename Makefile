@@ -12,7 +12,7 @@ parse :
 	Rscript parse_data.R
 
 zipup :
-	zip -r avail.zip scheduled.csv availability.* dossiers/
+	zip -r avail.zip availability.* dossiers/
 
 move : 
 	cp avail.zip ~/Google\ Drive/ID
