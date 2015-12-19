@@ -15,7 +15,8 @@ zipup :
 	zip -r avail.zip availability.* dossiers/
 
 move : 
-	cp avail.zip ~/Google\ Drive/ID
+	cp avail.zip ~/Google\ Drive/ID; \
+	unzip -u -d ~/Google\ Drive/ID avail.zip
 
 clean:
 	$(RM) avail.zip availability.*
