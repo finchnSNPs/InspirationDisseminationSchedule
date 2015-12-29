@@ -55,7 +55,7 @@ gs_title("participants") %>%        # register the google sheet called "particip
 #' 
 #' The procedure is similar here, except we are reading in the data for the 
 #' guests that have already been scheduled.
-gs_title("previous_guests") %>% 
+gs_title("scheduled_guests") %>% 
   gs_read() %>% 
   mutate(Date = parse_date_time(Date, c("md", "mdy"))) %>%
   (scheduled$set)
