@@ -132,12 +132,10 @@ make_dossier <- function(x, df, xlist, wd = "."){
   dname <- make_filename(x, wd)
   i <- which(df$Name == x)
   f <- file(dname, "w")
-  cat("# ", x, "\n\n", file = f)
-  cat("## Email: <", df$Email[i], ">\n\n", file = f, sep = "")
-  cat("### ", df$Deg[i], "in", df$Dept[i], "\n\n", file = f)
-  cat("### PI:", df$PI[i], "\n\n", file = f)
-  cat("## Research Description\n\n", df$Desc[i], "\n\n", file = f)
-  cat("## Availability\n", file = f)
+  template <- system.file("files/template.txt", package = "scheduler")
+  out <- infuser::infuse(template, df[i, ])
+  cat(out, file = f)
+  # parsing availability
   avail <- as.character(xlist[[x]])
   pref  <- df$Pref[i]
   pref  <- which(xlist[[x]] == pref)

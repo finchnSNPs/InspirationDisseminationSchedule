@@ -5,14 +5,16 @@ Version: 1.0
 Date: 2015-09-05
 Author: Zhian N. Kamvar
 Maintainer: Zhian N. Kamvar <zkamvar@gmail.com>
-Description: More details about what the package does. See
-        <http://http://cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file>
-        for details on how to write this part.
-Imports: 
-  dplyr,
-  lubridate,
-  reshape2,
-  ggplot2,
-  ggvis,
-  googlesheets
+Description: More details about what the package does. See <http://http://
+    cran.r-project.org/doc/manuals/r-release/R-exts.html#The-DESCRIPTION-file> for
+    details on how to write this part.
+Imports:
+    dplyr,
+    lubridate,
+    reshape2,
+    ggplot2,
+    ggvis,
+    googlesheets,
+    infuser
 License: MIT
+RoxygenNote: 5.0.1
