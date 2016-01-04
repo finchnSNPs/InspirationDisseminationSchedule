@@ -1,0 +1,7 @@
+scheduler 1.1.0
+===============
+
+New Features
+------------
+
+* now utilizing the _infuser_ package for the dossier template, making it easier to create new templates.
