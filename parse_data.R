@@ -36,8 +36,17 @@ options(stringsAsFactors = HELLNO)
 
 any_given_sunday <- parse_date_time("Jan 4 2015", "mdy") + dweeks(0:101)
 sundays          <- length(any_given_sunday)
-category_names   <- c("Timestamp", "Name", "Email", "Dept", "PI", "Deg", 
-                      "Avail", "Pref", "Desc")
+category_names   <- list(
+  Timestamp = "Timestamp", 
+  Name      = "Name", 
+  Email     = "Email", 
+  Dept      = "Department.Program", 
+  PI        = "Primary.Investigator.and.or.Major.Advisor.s.", 
+  Deg       = "Degree.working.towards", 
+  Avail     = "What.Sundays.are.you.available.", 
+  Pref      = "Which.Sunday.is.your.preferred.date.", 
+  Desc      = "Please.give.a.short..2.3.sentence..description.of.your.research"
+)
 #' ### Data
 #' 
 #' This will read in the data and save it in the global variables for
@@ -47,9 +56,9 @@ category_names   <- c("Timestamp", "Name", "Email", "Dept", "PI", "Deg",
 #' has 9 columns corresponding to the "category_names". If this is ever to 
 #' change, the category_names variable and this section should change.
 #' 
-gs_title("participants") %>%        # register the google sheet called "participants"
-  gs_read() %>%                     # read it in as a data frame
-  setNames(category_names) %>%      # set the names
+gs_title("participants") %>% # register the google sheet called "participants"
+  gs_read() %>%              # read it in as a data frame
+  rename_(.dots = category_names) %>%             # set the names
   mutate(Pref = parse_date_time(Pref, "mdy")) %>% # recode preference as POSIX
   (IDS$set)                         # store in the IDS internal data holder.
 #' 
