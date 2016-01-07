@@ -9,3 +9,4 @@ dossiers/*pdf
 *html
 .httr-oauth
 availability.csv
+*.png
