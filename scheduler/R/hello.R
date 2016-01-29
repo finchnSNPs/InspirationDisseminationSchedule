@@ -133,7 +133,7 @@ make_dossier <- function(x, df, xlist, wd = "."){
   i <- which(df$Name == x)
   f <- file(dname, "w")
   template <- system.file("files/template.txt", package = "scheduler")
-  out <- infuser::infuse(template, df[i, ])
+  out <- infuser::infuse(template, as.list(df[i, ]))
   cat(out, file = f)
   # parsing availability
   avail <- as.character(xlist[[x]])
