@@ -58,7 +58,8 @@ category_names   <- list(
 #' 
 gs_title("participants") %>% # register the google sheet called "participants"
   gs_read() %>%              # read it in as a data frame
-  rename_(.dots = category_names) %>%             # set the names
+  # rename_(.dots = category_names) %>%             # set the names
+  setNames(names(category_names)) %>%
   mutate(Pref = parse_date_time(Pref, "mdy")) %>% # recode preference as POSIX
   (IDS$set)                         # store in the IDS internal data holder.
 #' 
