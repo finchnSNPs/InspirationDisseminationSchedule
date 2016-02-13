@@ -5,13 +5,13 @@
 #' google does not put quotations around the data itself, messing up the
 #' formatting.
 #------------------------------------------------------------------------------#
-library(scheduler)
-library(dplyr)
-library(lubridate)
-library(reshape2)
-library(ggplot2)
-library(ggvis)
-library(googlesheets)
+library("scheduler")
+library("dplyr")
+library("lubridate")
+library("reshape2")
+library("ggplot2")
+library("ggvis")
+library("googlesheets")
 #' Sun Aug  9 18:38:57 2015 ------------------------------
 #' Note:
 #' 
