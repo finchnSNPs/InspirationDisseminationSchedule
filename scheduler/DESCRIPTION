@@ -5,8 +5,7 @@ Version: 1.3
 Date: 2016-02-13
 Author: Zhian N. Kamvar
 Maintainer: Zhian N. Kamvar <zkamvar@gmail.com>
-Description: This contains various functions and internal data structures that 
-allow for scheduling guests for Inspiration Dissemination.
+Description: This contains various functions and internal data structures that allow for scheduling guests for Inspiration Dissemination.
 Imports:
     dplyr,
     lubridate,
