@@ -16,7 +16,7 @@ if (!"InspirationDisseminationSchedule" %in% installed.packages()[, "Package"]){
     if (!require("devtools") || packageVersion("devtools") < package_version("1.10.0")){
         install.packages("devtools", repos = "http://cran.r-project.org")
     }
-    devtools::install_github("zkamvar/InspirationDisseminationSchedule@httr-update-fix")
+    devtools::install_github("zkamvar/InspirationDisseminationSchedule")
 }
 #' 
 #' Now all the packages need to be loaded
