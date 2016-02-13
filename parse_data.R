@@ -1,10 +1,25 @@
-#------------------------------------------------------------------------------#
-#' Zhian Kamvar, 2014-01-03
-#' This file will utilize libreoffice to convert the data in ods format to csv.
-#' The reason the data is not initially saved as csv is due to the fact that 
-#' google does not put quotations around the data itself, messing up the
-#' formatting.
-#------------------------------------------------------------------------------#
+#' # Setup
+#' 
+#' This script will parse the data to help with construction of the schedule
+#' for Inspiration Dissemination. It will gather in responses from a google
+#' form, scheduled guests from a google sheet, and create dossiers and an
+#' interactive visualization to help schedule guests without having to sift
+#' through columns of a spreadsheet, emails, or separate files.
+#'
+#' ## Installing the 'scheduler' package
+#' 
+#' Some helper functions are defined in the package scheduler, which is part
+#' of this repository. It exists on github and will install all the 
+#' dependencies needed to make this script run.
+#'
+if (!"InspirationDisseminationSchedule" %in% installed.packages()[, "Package"]){
+    if (!require("devtools") || packageVersion("devtools") < package_version("1.10.0")){
+        install.packages("devtools", repos = "http://cran.r-project.org")
+    }
+    devtools::install_github("zkamvar/InspirationDisseminationSchedule@httr-update-fix")
+}
+#' 
+#' Now all the packages need to be loaded
 library("scheduler")
 library("dplyr")
 library("lubridate")
