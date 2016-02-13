@@ -176,3 +176,19 @@ IDS       <- VALFUN()
 #' @usage IDS$get()
 #' @export
 "IDS"
+
+#' Return the date for last Sunday
+#'
+#' @param now Today's date in ymd format. Defaults to the output of \code{Sys.Date()}.
+#'
+#' @return Last Sunday's date in POSIXct format
+#' @export
+#'
+#' @examples
+#' get_last_sunday()
+#' get_last_sunday("2014-02-13")
+get_last_sunday <- function(now = Sys.Date()){
+  now <- lubridate::parse_date_time(now, "ymd")
+  days_since_sunday <- (lubridate::wday(now) - 1) %>% lubridate::days()
+  return(now - days_since_sunday)
+}

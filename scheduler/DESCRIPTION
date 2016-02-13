@@ -1,8 +1,8 @@
 Package: scheduler
 Type: Package
 Title: What the Package Does Using Title Case
-Version: 1.1
-Date: 2016-01-03
+Version: 1.3
+Date: 2016-02-13
 Author: Zhian N. Kamvar
 Maintainer: Zhian N. Kamvar <zkamvar@gmail.com>
 Description: More details about what the package does. See <http://http://
