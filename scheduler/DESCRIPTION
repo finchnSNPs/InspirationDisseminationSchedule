@@ -18,3 +18,5 @@ Imports:
     infuser
 License: MIT
 RoxygenNote: 5.0.1
+Remotes:
+  jennybc/googlesheets
