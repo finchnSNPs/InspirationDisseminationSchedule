@@ -6,14 +6,17 @@ radio show at Oregon State University.
 
 ## Setup
 
-You will need to install [R](https://cran.r-project.org) (preferably 
-[Rstudio](https://rstudio.com)), and [pandoc](http://pandoc.org/installing.html).
+You will need to install:
+
+- [R](https://cran.r-project.org) 
+- [Rstudio](https://rstudio.com)
+- [pandoc](http://pandoc.org/installing.html).
 
 Run the following code:
 
 ```r
 install.packages("devtools")
-devtools::install_github("zkamvar/InspirationDisseminationSchedule/scheduler")
+devtools::install_github("zkamvar/InspirationDisseminationSchedule")
 ```
 
 > Note for windows users: R might ask you if you want to use a 'personal

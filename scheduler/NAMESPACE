@@ -3,6 +3,7 @@
 export(IDS)
 export(compare_array)
 export(get_availability)
+export(get_last_sunday)
 export(infoclick)
 export(infohover)
 export(make_dossier)

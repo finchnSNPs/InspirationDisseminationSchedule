@@ -1,17 +1,32 @@
-#------------------------------------------------------------------------------#
-#' Zhian Kamvar, 2014-01-03
-#' This file will utilize libreoffice to convert the data in ods format to csv.
-#' The reason the data is not initially saved as csv is due to the fact that 
-#' google does not put quotations around the data itself, messing up the
-#' formatting.
-#------------------------------------------------------------------------------#
-library(scheduler)
-library(dplyr)
-library(lubridate)
-library(reshape2)
-library(ggplot2)
-library(ggvis)
-library(googlesheets)
+#' # Setup
+#' 
+#' This script will parse the data to help with construction of the schedule
+#' for Inspiration Dissemination. It will gather in responses from a google
+#' form, scheduled guests from a google sheet, and create dossiers and an
+#' interactive visualization to help schedule guests without having to sift
+#' through columns of a spreadsheet, emails, or separate files.
+#'
+#' ## Installing the 'scheduler' package
+#' 
+#' Some helper functions are defined in the package scheduler, which is part
+#' of this repository. It exists on github and will install all the 
+#' dependencies needed to make this script run.
+#'
+if (!"InspirationDisseminationSchedule" %in% installed.packages()[, "Package"]){
+    if (!require("devtools") || packageVersion("devtools") < package_version("1.10.0")){
+        install.packages("devtools", repos = "http://cran.r-project.org")
+    }
+    devtools::install_github("zkamvar/InspirationDisseminationSchedule")
+}
+#' 
+#' Now all the packages need to be loaded
+library("scheduler")
+library("dplyr")
+library("lubridate")
+library("reshape2")
+library("ggplot2")
+library("ggvis")
+library("googlesheets")
 #' Sun Aug  9 18:38:57 2015 ------------------------------
 #' Note:
 #' 
@@ -33,8 +48,7 @@ library(googlesheets)
 #' These are variables for use throughout the script
 HELLNO <- FALSE
 options(stringsAsFactors = HELLNO)
-
-any_given_sunday <- parse_date_time("Jan 4 2015", "mdy") + dweeks(0:101)
+any_given_sunday <- get_last_sunday() + dweeks(0:52) # Projecting out to one year
 sundays          <- length(any_given_sunday)
 category_names   <- list(
   Timestamp = "Timestamp", 
@@ -58,6 +72,7 @@ category_names   <- list(
 #' 
 gs_title("participants") %>% # register the google sheet called "participants"
   gs_read() %>%              # read it in as a data frame
+  setNames(names(.) %>% make.names()) %>%         # 'fix' names
   rename_(.dots = category_names) %>%             # set the names
   mutate(Pref = parse_date_time(Pref, "mdy")) %>% # recode preference as POSIX
   (IDS$set)                         # store in the IDS internal data holder.
