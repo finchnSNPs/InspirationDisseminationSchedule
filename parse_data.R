@@ -33,8 +33,7 @@ library("googlesheets")
 #' These are variables for use throughout the script
 HELLNO <- FALSE
 options(stringsAsFactors = HELLNO)
-
-any_given_sunday <- parse_date_time("Jan 4 2015", "mdy") + dweeks(0:101)
+any_given_sunday <- get_last_sunday() + dweeks(0:52) # Projecting out to one year
 sundays          <- length(any_given_sunday)
 category_names   <- list(
   Timestamp = "Timestamp", 
