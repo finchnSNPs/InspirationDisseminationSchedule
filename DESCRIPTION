@@ -1,7 +1,7 @@
 Package: InspirationDisseminationSchedule
 Type: Package
 Title: A package to install scheduler
-Version: 1.0
+Version: 1.1
 Date: 2016-02-13
 Author: Zhian N. Kamvar
 Maintainer: Zhian N. Kamvar <zkamvar@gmail.com>
