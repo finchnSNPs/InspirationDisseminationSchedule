@@ -79,17 +79,24 @@ gs_title("participants") %>% # register the google sheet called "participants"
 #' 
 #' The procedure is similar here, except we are reading in the data for the 
 #' guests that have already been scheduled.
-gs_title("scheduled_guests") %>% 
+all_guests_ss <- gs_title("scheduled_guests") 
+all_guests_ss %>% 
   gs_read() %>% 
   mutate(Date = parse_date_time(Date, c("md", "mdy"))) %>%
   (scheduled$set)
 #' 
 #' Since it's nice to have the CSV of previous guests available for quick 
-#' reference, here we are sorting the incoming spreadsheet, making the date a
-#' character string, and then writing a table.
+#' reference, here we are:
+#' - sorting the incoming spreadsheet
+#' - making the date a character string
+#' - Adding the Department by left-joining the columns from the input data set
 sched_out <- scheduled$get() %>% 
   `[`(order(.$Date), ) %>% 
-  mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date)))
+  mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date))) %>%
+  left_join(IDS$get()) %>%
+  select(Name, Date, Dept) # Hosts
+
+# gs_edit_cells(all_guests_ss, input = sched_out)
 
 write.table(sched_out, 
             file = "scheduled.csv", 
