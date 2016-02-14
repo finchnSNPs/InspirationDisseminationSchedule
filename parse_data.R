@@ -95,9 +95,16 @@ sched_out <- scheduled$get() %>%
   mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date))) %>%
   left_join(IDS$get()) %>%
   select(Name, Date, Dept, Hosts)
-
+# Remove old backup
+backup_title <- "scheduled_guests_backup"
+if (backup_title %in% gs_ls()$sheet_title){
+  gs_delete(gs_title(backup_title))
+}
+# Backup current sheet
+gs_copy(all_guests_ss, backup_title)
+# Replace values
 gs_edit_cells(all_guests_ss, input = sched_out)
-
+# Write to github csv file.
 write.table(sched_out, 
             file = "scheduled.csv", 
             sep = ",", 
