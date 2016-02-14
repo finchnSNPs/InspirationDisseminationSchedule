@@ -94,9 +94,9 @@ sched_out <- scheduled$get() %>%
   `[`(order(.$Date), ) %>% 
   mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date))) %>%
   left_join(IDS$get()) %>%
-  select(Name, Date, Dept) # Hosts
+  select(Name, Date, Dept, Hosts)
 
-# gs_edit_cells(all_guests_ss, input = sched_out)
+gs_edit_cells(all_guests_ss, input = sched_out)
 
 write.table(sched_out, 
             file = "scheduled.csv", 
