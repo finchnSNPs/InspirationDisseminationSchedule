@@ -94,14 +94,13 @@ all_guests_ss %>%
 
 sched_out <- scheduled$get() %>% 
   `[`(order(.$Date), ) %>%                                 # Sort table by date
-  assign("sched_order", ., envir = .GlobalEnv) %>%         # make a new variable
-  mutate(Date = make_my_day(Date)) %>%                     # Convert date to POSIXct
+  mutate(Date = make_my_day(Date)) %>%                     # Convert date to character
   full_join(IDS$get(), by = "Name") %>%                    # Join the scheduled guests to get their department if it doesn't exist
   filter(!is.na(Date)) %>%                                 # Remove unscheduled guests
   mutate(Dept = ifelse(is.na(Dept.x), Dept.y, Dept.x)) %>% # Add the department of scheduled guests who don't have them.
   select(Name, Date, Dept, Hosts)                          # Returning only Name, Date, Dept, and Hosts
 
-if (!identical(sched_order, scheduled$get())){
+if (!identical(sched_out, scheduled$get() %>% mutate(Date = make_my_day(Date)))){
   # Remove old backup
   backup_title <- "scheduled_guests_backup"
   if (backup_title %in% gs_ls()$sheet_title){
