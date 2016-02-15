@@ -90,13 +90,18 @@ all_guests_ss %>%
 #' - sorting the incoming spreadsheet
 #' - making the date a character string
 #' - Adding the Department by left-joining the columns from the input data set
-sched_out <- scheduled$get() %>% 
-  `[`(order(.$Date), ) %>% 
-  mutate(Date = paste(month(Date, label = TRUE), day(Date), year(Date))) %>%
-  left_join(IDS$get()) %>%
-  select(Name, Date, Dept, Hosts)
+#' - Selecting only the columns entitled Name, Date, Dept, and Hosts
 
-if (!identical(sched_out[-2], gs_read(all_guests_ss)[-2])){
+sched_out <- scheduled$get() %>% 
+  `[`(order(.$Date), ) %>%                                 # Sort table by date
+  assign("sched_order", ., envir = .GlobalEnv) %>%         # make a new variable
+  mutate(Date = make_my_day(Date)) %>%                     # Convert date to POSIXct
+  full_join(IDS$get(), by = "Name") %>%                    # Join the scheduled guests to get their department if it doesn't exist
+  filter(!is.na(Date)) %>%                                 # Remove unscheduled guests
+  mutate(Dept = ifelse(is.na(Dept.x), Dept.y, Dept.x)) %>% # Add the department of scheduled guests who don't have them.
+  select(Name, Date, Dept, Hosts)                          # Returning only Name, Date, Dept, and Hosts
+
+if (!identical(sched_order, scheduled$get())){
   # Remove old backup
   backup_title <- "scheduled_guests_backup"
   if (backup_title %in% gs_ls()$sheet_title){
@@ -106,14 +111,14 @@ if (!identical(sched_out[-2], gs_read(all_guests_ss)[-2])){
   gs_copy(all_guests_ss, backup_title)
   # Replace values
   gs_edit_cells(all_guests_ss, input = sched_out)
-  # Write to github csv file.
-  write.table(sched_out, 
-              file = "scheduled.csv", 
-              sep = ",", 
-              row.names = FALSE,
-              col.names = TRUE)
 }
 
+# Write to github csv file.
+write.table(sched_out, 
+            file = "scheduled.csv", 
+            sep = ",", 
+            row.names = FALSE,
+            col.names = TRUE)
 #' Parsing the availability for the guests requires the creation of a separate
 #' vector for each guest containing POSIX dates. Since each guest can have a
 #' different number of availabilities, this should be a list.
