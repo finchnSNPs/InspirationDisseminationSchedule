@@ -192,3 +192,19 @@ get_last_sunday <- function(now = Sys.Date()){
   days_since_sunday <- (lubridate::wday(now) - 1) %>% lubridate::days()
   return(now - days_since_sunday)
 }
+
+
+#' Pretty print month day year
+#' 
+#' This will print the month, day, and year for any Date object
+#'
+#' @param Date a date in POSIXct format
+#'
+#' @return A character string
+#' @export
+#'
+#' @examples
+#' make_my_day(ymd(Sys.Date()))
+make_my_day <- function(Date){
+  paste(month(Date, label = TRUE), day(Date), year(Date))
+}
