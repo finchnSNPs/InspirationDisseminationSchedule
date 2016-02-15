@@ -1,11 +1,11 @@
 Package: InspirationDisseminationSchedule
 Type: Package
 Title: A package to install scheduler
-Version: 1.1
+Version: 1.2
 Date: 2016-02-13
 Author: Zhian N. Kamvar
 Maintainer: Zhian N. Kamvar <zkamvar@gmail.com>
 Description: This is to install the dependencies necessary to run parse_data.R
-Imports: scheduler (>= 1.3)
+Imports: scheduler (>= 1.4)
 Remotes:
   zkamvar/InspirationDisseminationSchedule/scheduler
