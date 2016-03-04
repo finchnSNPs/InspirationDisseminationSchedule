@@ -98,7 +98,7 @@ sched_out <- scheduled$get() %>%
   full_join(IDS$get(), by = "Name") %>%                    # Join the scheduled guests to get their department if it doesn't exist
   filter(!is.na(Date)) %>%                                 # Remove unscheduled guests
   mutate(Dept = ifelse(is.na(Dept.x), Dept.y, Dept.x)) %>% # Add the department of scheduled guests who don't have them.
-  select(Name, Date, Dept, Hosts)                          # Returning only Name, Date, Dept, and Hosts
+  select(Name, Date, Showtime, Dept, Hosts) # Returning only Name, Date, Showtime, Dept, and Hosts
 
 if (!identical(sched_out, scheduled$get() %>% mutate(Date = make_my_day(Date)))){
   # Remove old backup
