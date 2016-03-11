@@ -75,6 +75,7 @@ gs_title("participants") %>% # register the google sheet called "participants"
   setNames(names(.) %>% make.names()) %>%         # 'fix' names
   rename_(.dots = category_names) %>%             # set the names
   mutate(Pref = parse_date_time(Pref, "mdy")) %>% # recode preference as POSIX
+  mutate(Name = make.unique(Name)) %>%            # ensure names are unique.
   (IDS$set)                         # store in the IDS internal data holder.
 #' 
 #' The procedure is similar here, except we are reading in the data for the 
