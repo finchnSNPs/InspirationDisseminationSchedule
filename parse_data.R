@@ -155,7 +155,7 @@ future_dates <- as.character(scheduled$get("Date")) %in% rownames(avail_array)
 scheduled_dates <- scheduled$get() %>% 
   filter(future_dates & !is.na(Name)) %>% # Filtering for only scheduled slots
   mutate(Date = as.character(Date)) %>%   # Mutating to character for comparisons
-  select(Date) %>% unlist() %>%           # Retrieving the dates
+  select(Date) %>% unlist()               # Retrieving the dates
   
 Sched_Sunday <- rownames(avail_array) %in% scheduled_dates
 avail_array[Sched_Sunday, , "Filled"] <- "Scheduled"
