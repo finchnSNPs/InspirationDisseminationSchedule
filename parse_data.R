@@ -150,11 +150,18 @@ avail_array[, , "Available"]  <- ifelse(is_available, "Available", "Unavailable"
 avail_array[, , "Preference"] <- ifelse(is_preference, "Preference", NA)
 
 # Scheduled slots
-Sched_Sunday <- rownames(avail_array) %in% as.character(scheduled$get("Date"))
+## These will only be the slots that have dates AND names assigned.
+future_dates <- as.character(scheduled$get("Date")) %in% rownames(avail_array)
+scheduled_dates <- scheduled$get() %>% 
+  filter(future_dates & !is.na(Name)) %>% # Filtering for only scheduled slots
+  mutate(Date = as.character(Date)) %>%   # Mutating to character for comparisons
+  select(Date) %>% unlist() %>%           # Retrieving the dates
+  
+Sched_Sunday <- rownames(avail_array) %in% scheduled_dates
 avail_array[Sched_Sunday, , "Filled"] <- "Scheduled"
 
 # Removing the rows that are in the past.
-avail_array <- avail_array[any_given_sunday > ymd(Sys.Date()), , , drop = FALSE]
+avail_array <- avail_array[as_date(any_given_sunday) > ymd(Sys.Date()), , , drop = FALSE]
 
 # Who still needs to be scheduled?
 unscheduled <- !dimnames(avail_array)$Guest %in% scheduled$get("Name")
