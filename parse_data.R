@@ -100,8 +100,18 @@ sched_out <- scheduled$get() %>%
   filter(!is.na(Date)) %>%                                 # Remove unscheduled guests
   mutate(Dept = ifelse(is.na(Dept.x), Dept.y, Dept.x)) %>% # Add the department of scheduled guests who don't have them.
   select(Name, Date, Showtime, Dept, Hosts) # Returning only Name, Date, Showtime, Dept, and Hosts
-
-if (!identical(sched_out, scheduled$get() %>% mutate(Date = make_my_day(Date)))){
+#' 
+#' In order to make sure everything is up to date, we will write the filtered 
+#' sheet to the drive, but before we do that, we should make sure that all the
+#' variables we are choosing are the same and that the date is in string format
+#' to avoid comparing datetimes, which is known to be problematic.
+unfiltered_sched <- scheduled$get() %>% 
+  select(Name, Date, Showtime, Dept, Hosts) %>% # choose only these columns
+  mutate(Date = make_my_day(Date))              # make sure the date is in string format
+#'
+#' Now we check to see if our filtered schedule and unfiltered are different. If
+#' they are, then the old backup sheet is deleted and the new one is replaced.
+if (!identical(sched_out, unfiltered_sched)){
   # Remove old backup
   backup_title <- "scheduled_guests_backup"
   if (backup_title %in% gs_ls()$sheet_title){
@@ -112,7 +122,9 @@ if (!identical(sched_out, scheduled$get() %>% mutate(Date = make_my_day(Date))))
   # Replace values
   gs_edit_cells(all_guests_ss, input = sched_out)
 }
-
+#'
+#' Once all the checking and backups have been made, we can write this to a csv
+#' file hosted on the github. 
 # Write to github csv file.
 write.table(sched_out, 
             file = "scheduled.csv", 
