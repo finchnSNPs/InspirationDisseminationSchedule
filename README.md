@@ -10,7 +10,8 @@ You will need to install:
 
 - [R](https://cran.r-project.org) 
 - [Rstudio](https://rstudio.com)
-- [pandoc](http://pandoc.org/installing.html).
+- [pandoc](http://pandoc.org/installing.html)
+- [LaTeX](https://www.latex-project.org/get/)
 
 Run the following code:
 
